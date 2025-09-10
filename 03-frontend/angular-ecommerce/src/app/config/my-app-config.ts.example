@@ -1,0 +1,16 @@
+export default {
+  auth: {
+    domain: "<YOUR_AUTH0_DOMAIN>",
+    clientId: "<YOUR_AUTH0_CLIENT_ID>",
+    authorizationParams: {
+      redirect_uri: "https://<YOUR_ANGULAR_HOST>:<YOUR_ANGULAR_PORT>/login/callback",
+      audience: "<YOUR_API_AUDIENCE>",
+    },
+  },
+  httpInterceptor: {
+    allowedList: [
+      'https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT>/api/orders/**',
+      'https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT>/api/checkout/purchase'
+    ],
+  },
+}
