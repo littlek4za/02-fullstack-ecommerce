@@ -34,7 +34,7 @@ export class CheckoutComponent implements OnInit {
   storage: Storage = sessionStorage;
 
   // initialize Stripe API
-  stripe = Stripe(environment.stripePulishableKey);
+  stripe = Stripe(environment.stripePublishableKey);
 
   paymentInfo: PaymentInfo = new PaymentInfo();
   cardElement: any;

@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
 
-  luv2shopApiUrl: "https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT>/api",
+  myShopApiUrl: "https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT>/api",
   stripePublishableKey: "<YOUR_STRIPE_PUBLISHABLE_KEY>"
 };

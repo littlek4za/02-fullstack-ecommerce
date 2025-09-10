@@ -71,7 +71,7 @@ Make sure the following are installed on your system:
     * Click Create
     
 4. Install Auth0 dependencies
-    * Run the following command in the Angular app console:
+    * Open terminal at `03-frontend/angular-ecommerce` and run the following command:
     ```bash
     npm install @auth0/auth0-angular
     ```
@@ -103,7 +103,7 @@ Make sure the following are installed on your system:
         * `<YOUR_AUTH0_CLIENT_ID>` → Your Auth0 client ID
         * `<YOUR_FRONTEND_HOST>` → Your Frontend Host (example: localhost)
         * `<YOUR_FRONTEND_PORT>` → Your Frontend Port (example: 4200)
-        * `<YOUR_API_AUDIENCE>` → Your Auth0 API audience (Your auth0 identifier) 
+        * `<YOUR_API_AUDIENCE>` → Your Auth0 API audience (Your auth0 api identifier) 
         * `<YOUR_BACKEND_HOST>` → Host of Spring Boot backend (example: localhost)
         * `<YOUR_BACKEND_PORT>` → Port of backend (example: 8443)
     * Rename the file from `my-app-config.ts.example` to `my-app-config.ts`
@@ -147,8 +147,12 @@ OU = DevTeam
 # Common Name (fully qualified domain name of your website server)
 CN = localhost
 ```
-  * CN is pointing to your frontend host, modify this if you have different ip then localhost
+  * C (Country) must be 2 letter only, example for Malaysia: MY
+  * CN is pointing to your frontend host, modify this if you have different ip than localhost
 4. Open Terminal at `03-frontend/angular-ecommerce` and run the following command
+```bash
+mkdir ssl-localhost
+```
 ```bash
 openssl req -x509 -out ssl-localhost\localhost.crt -keyout ssl-localhost\localhost.key -newkey rsa:2048 -nodes -sha256 -days 365 -config localhost.conf
 ```
@@ -158,7 +162,7 @@ openssl req -x509 -out ssl-localhost\localhost.crt -keyout ssl-localhost\localho
   openssl x509 -noout -text -in ssl-localhost/localhost.crt
   ```
 ### Backend
-1. Open Terminal at `02-backend/spring-boot-ecommerce` and run the following command
+1. Open Terminal at `02-backend/spring-boot-ecommerce` and edit the following command before running:
 ```bash
 keytool -genkeypair -alias springbootecommerce -keystore src/main/resources/my-keystore.p12 -keypass secret -storeType PKCS12 -storepass secret -keyalg RSA -keysize 2048 -validity 365 -dname "C=YourCountry, ST=YourState, L=YourCity, O=MyProject, OU=DevTeam, CN=localhost" -ext "SAN=dns:localhost"
 ```
@@ -167,9 +171,9 @@ keytool -genkeypair -alias springbootecommerce -keystore src/main/resources/my-k
   * CN and SAN=dns: is pointing to your backend host, modify this if you have different ip then localhost
 
 2. Check and verify if there is new file `my-keystore.p12` at `02-backend/spring-boot-ecommerce/src/main/resources/`
-  * View the content of your keystore using the following command
+  * View the content of your keystore using the following command, edit the storepass if you have changed it previously:
   ```bash
-  keytool -list -v -alias luv2code -keystore src/main/resources/luv2code-keystore.p12 -storepass secret
+  keytool -list -v -alias springbootecommerce -keystore src/main/resources/my-keystore.p12 -storepass secret
   ```
 
 
@@ -202,7 +206,7 @@ spring.security.oauth2.resourceserver.jwt.audience=<YOUR_AUDIENCE>
 ############################################################
 # HTTPS configuration
 ############################################################
-server.port=8443
+server.port=<YOUR_BACKEND_PORT>
 # demo port
 ## server.port=9898
 
@@ -244,12 +248,13 @@ stripe.key.secret=<STRIPE_SECRET_KEY>
 
 3. Update Resource Server configuration:
  * Replace `<YOUR_ISSUER_URI>` with your Auth0 domain (example: https://dev-XXXXXXX.us.auth0.com/)
- * Replace `<YOUR_AUDIENCE>` with your API audience (Your auth0 identifier) 
+ * Replace `<YOUR_AUDIENCE>` with your API audience (Your auth0 API identifier) 
 
 4. Update HTTPS configuration:
- * Replace `<KEY_ALIAS>` (default from the above configuration: luv2code)
- * Replace `<KEYSTORE_FILE>` (default from the above configuration: luv2code-keystore.p12)
- * Replace `<KEYSTORE_PASSWORD>` (default from the above confirugration: secret)
+ * Replace `<YOUR_BACKEND_PORT>` (default for https: 8443)
+ * Replace `<KEY_ALIAS>` (default from the above https setup configuration: springbootecommerce)
+ * Replace `<KEYSTORE_FILE>` (default from the above https setup configuration: my-keystore.p12)
+ * Replace `<KEYSTORE_PASSWORD>` (default from the above https setup confirugration: secret)
 
 5. Update Payment Processing configuration:
  * Replace `<STRIPE_SECRET_KEY>` with your Stripe secret key (example: sk_test_XXXXXXXX)
@@ -300,6 +305,20 @@ mvn clean install
 mvn spring-boot:run
 ```
 
+### Local HTTPS Warning
+
+This project uses HTTPS for local development. Since we are using **self-signed certificates**, your browser may block requests to the backend with errors like:
+
+`net::ERR_CERT_AUTHORITY_INVALID`
+
+### To Fix
+
+* Trust the certificate in your browser (temporary for development):**
+   - Open your backend URL in your browser: `https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT/`.
+   - You will see a security warning. Click **Advanced → Proceed to localhost**.
+   - Once trusted, Angular can make HTTP requests to the backend.
+
+* Refresh the Frontend Page to fetch again the product list.
 
 
 
