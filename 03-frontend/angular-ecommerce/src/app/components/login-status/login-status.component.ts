@@ -27,7 +27,7 @@ export class LoginStatusComponent implements OnInit {
       this.userEmail = user?.email;
 
       //store userEmail to sessionstorage
-      this.storage.setItem('userEmail', JSON.stringify(this.userEmail));
+      this.storage.setItem('userEmail', JSON.stringify(this.userEmail ?? null));
       console.log('User ID: ', this.userEmail);
     });
   }

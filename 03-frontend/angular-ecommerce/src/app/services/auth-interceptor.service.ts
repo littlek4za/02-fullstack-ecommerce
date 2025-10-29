@@ -30,7 +30,7 @@ export class AuthInterceptorService implements HttpInterceptor{
     //   }, 
     //   HttpHandler { handle() { ... } }
     // );
-    if(secureEndpoints.some((url) => request.urlWithParams.includes(url))){
+    if(secureEndpoints.some((url) => request.urlWithParams.includes(url))){ //if any of the request.urlWithParams includes the array secureEndpoints then return true
       await this.auth.getAccessTokenSilently().forEach((token)=>{
         console.log('Access Token: ', token);
         request = request.clone({
