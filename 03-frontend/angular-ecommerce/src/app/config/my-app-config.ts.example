@@ -9,7 +9,7 @@ export default {
   },
   httpInterceptor: {
     allowedList: [
-      'https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT>/api/orders/**',
+      'https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT>/api/orders/*',
       'https://<YOUR_BACKEND_HOST>:<YOUR_BACKEND_PORT>/api/checkout/purchase'
     ],
   },

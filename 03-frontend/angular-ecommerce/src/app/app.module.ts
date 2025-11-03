@@ -70,7 +70,8 @@ const routes: Routes = [
     ProductService,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
+      useClass: AuthInterceptorService, //option 1: Manual Interceptor
+      // useClass: AuthHttpInterceptor, //option 2: Auto Interceptor
       multi: true,
     },
   ],
